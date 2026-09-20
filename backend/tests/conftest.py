@@ -1,14 +1,10 @@
 import os
 
-# ============================================================
-# Test database
-# ============================================================
-
-os.environ["DATABASE_URL"] = (
+os.environ.setdefault(
+    "DATABASE_URL",
     "postgresql+psycopg2://"
-    "backflow:backflow_dev@localhost:5434/backflow_test"
+    "backflow:backflow_dev@localhost:5434/backflow_test",
 )
-
 
 # ============================================================
 # Application imports
