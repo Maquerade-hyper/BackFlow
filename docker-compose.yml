@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: backflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: backflow
+      POSTGRES_USER: backflow
+      POSTGRES_PASSWORD: backflow_dev
+    ports:
+      - "5434:5432"
+    volumes:
+      - backflow_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U backflow -d backflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: backflow-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - backflow_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  backflow_postgres_data:
+  backflow_redis_data:
